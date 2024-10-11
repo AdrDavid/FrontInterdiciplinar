@@ -49,12 +49,12 @@ export default function Vermais() {
                 
 
                 {imoveis.imagem?.map((img, index) => (
-                    <SwiperSlide className=' '>
+                    <SwiperSlide className=' ' key={index}>
                        
                         <div className='w-full xl:h-[90vh] lg:h-[80vh] md:h-[70vh] sm:h-[60vh] h-[300px]'>
 
                             <img 
-                                key={index}
+                                
                                 className='w-full  h-full object-cover  rounded-[5px]  '
                                 src={`http://localhost:3000/imagem/${img.imagem}`} 
                                 alt={`Imagem ${index + 1} do imóvel`}
@@ -62,48 +62,51 @@ export default function Vermais() {
                         </div>
                     </SwiperSlide>
 
-                    
-                    
                 ))}
                 
             </Swiper>
               
              
 
-            
+            <div className='flex justify-between flex-wrap gap-[2%] mt-[20px]'>
+            <div className='flex xl:w-[58%] sm:w-[100%] flex-wrap'>
 
-            <div className='flex justify-between'>
+                <div className='w-[100%] sm:w-[50%] mx-auto mb-[20px]  bg-[#ffffff] '>
+                    <div>
 
-            <div className='w-[50%] mx-auto  bg-[#2c532000] mt-[20px]'>
-                <div>
+                    </div>
+                    <p className='text-[22px]'><span className='text-[22px] text-[#1f1f1f]'>Bairro - </span>{imoveis.bairro}</p>
+                    <br />
+                    <p className='text-[22px]'><span className='text-[22px] text-[#1f1f1f]'>Quartos - </span>{imoveis.quarto}</p>
+                    <br />
+                    <p className='text-[22px]'><span className='text-[22px] text-[#1f1f1f]'>VAlor - </span>{imoveis.valor}</p>
+
+                    
+                </div>
+                
+                <div className='w-[100%] sm:w-[50%] mx-auto  bg-[#ffffff] mb-[20px]'>
+                    <p className='text-[20px] text-justify  text-[#1f1f1f]'>{imoveis.texto}</p>
+                </div>
 
                 </div>
-                <p className='text-[22px]'><span className='text-[22px] text-[#1f1f1f]'>Bairro - </span>{imoveis.bairro}</p>
-                <br />
-                <p className='text-[22px]'><span className='text-[22px] text-[#1f1f1f]'>Quartos - </span>{imoveis.quarto}</p>
-                <br />
-                <p className='text-[22px]'><span className='text-[22px] text-[#1f1f1f]'>VAlor - </span>{imoveis.valor}</p>
-               
                 
+                <div className='xl:w-[40%] sm:w-[100%] mx-auto  bg-[#ffffff] '>
+                <h1 className='text-[26px] text-[#1d1d1d]  mx-auto'>Entre em contato conosco</h1>
+                <br />
+                <form action="" className=' mx-auto'>
+                    <input type="Eail" name="" id="" placeholder='Email' className='w-[100%] h-[50px] border-4 p-2 focus:outline-none mb-5' />
+                    <input type="Eail" name="" id="" placeholder='Email' className='w-[100%] h-[50px] border-4 p-2 focus:outline-none mb-5' />
+                    <textarea name="" id="" className='w-[100%] min-h-[100px] border-4 p-2 focus:outline-none mb-5'></textarea>
+                    <input type="submit" value="Enviar" className='w-[100%] h-[50px] border-4 p-2 focus:outline-none mb-5 cursor-pointer' />
+                </form>
+                </div>
+
             </div>
-            <div className='w-[50%] mx-auto  bg-[#20405300] mt-[20px]'>
-                <p className='text-[20px] text-justify  text-[#1f1f1f]'>{imoveis.texto}</p>
-            </div>
+
             
-            </div>
-
         </div>
 
-        <div className='w-[80%] mx-auto min-h-[700px] bg-[#ffffff] mt-[200px]'>
-            <h1 className='text-[26px] text-[#1d1d1d] max-w-[600px] mx-auto'>Entre em contato conosco</h1>
-            <br />
-            <form action="" className='max-w-[600px] mx-auto'>
-                <input type="Eail" name="" id="" placeholder='Email' className='w-[100%] h-[50px] border-4 p-2 focus:outline-none mb-5' />
-                <input type="Eail" name="" id="" placeholder='Email' className='w-[100%] h-[50px] border-4 p-2 focus:outline-none mb-5' />
-                <textarea name="" id="" className='w-[100%] min-h-[100px] border-4 p-2 focus:outline-none mb-5'></textarea>
-                <input type="submit" value="Enviar" className='w-[100%] h-[50px] border-4 p-2 focus:outline-none mb-5 cursor-pointer' />
-            </form>
-        </div>
+        
     </>
   )
 }

@@ -47,16 +47,16 @@ export default function ImoveisContainer({filtros}) {
 
     <div className='bg-[#af525200] min-h-[400px] relative  '>
         
-        <div className=' z-10 w-[80%] bg-[#91e91e00] flex flex-wrap justify-center gap-3 mx-auto'>
+        <div className=' z-10 2xl:w-[1400px] lg:w-[980px] md:w-[700px]  w-[95%] flex flex-wrap justify-center gap-3 mx-auto'>
            
         {imoveisFiltrados.map((imovel) => (
       
-          <div className=' bg-[#000000e7]  w-full max-w-[24%] sm:w-1/3 cursor-pointer  rounded-[5px] relative shadow-[5px_5px_10px_0px_rgba(0,0,0,0.18)]' key={imovel.id}>
+          <div className=' bg-[#000000e7]   2xl:w-[24%] lg:w-[32%] md:w-[48%] sm:w-[48%] w-[95%]    cursor-pointer  rounded-[5px] relative shadow-[5px_5px_10px_0px_rgba(0,0,0,0.18)]' key={imovel.id}>
 
 
           {imovel.imagem.length > 0 &&(
             <img 
-            className=' w-full h-auto min-h-[300px] object-cover rounded-[5px] opacity-[0.8] hover:opacity-[1] transition-opacity duration-500 ' 
+            className=' w-full  md:h-[400px] sm:h-[400px] h-[500px] object-cover rounded-[5px] opacity-[0.8] hover:opacity-[1] transition-opacity duration-500 ' 
             src={`http://localhost:3000/imagem/${imovel.imagem[0].imagem}`} alt="" />
 
           )}
