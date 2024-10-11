@@ -24,7 +24,6 @@ export default function Imoveis({filtros}) {7
 
 
     useEffect(() => {
-      // Filtrando os imóveis com base nos filtros
       const filtrarImoveis = () => {
         const { valorMin, valorMax, quartos, bairro } = filtros;
         const novosImoveisFiltrados = imoveis.filter((imovel) => {

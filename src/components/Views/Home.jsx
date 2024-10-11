@@ -7,6 +7,8 @@ import ImoveisContainer from '../Imoveis/ImoveisContainer'
 export default function Home() {
   const [filtro, setFiltro] = useState({ valorMin: '', valorMax: '', quartos: '', bairro: '' });
 
+
+
   const handleFilter = (novosFiltros) => {
     setFiltro(novosFiltros);
   };

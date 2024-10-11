@@ -1,7 +1,15 @@
 import axios from 'axios'
 import React, {useState, useEffect} from 'react'
-
+import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
 import { Link, useParams } from 'react-router-dom'
+import './Swiper.css'
+
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
+
 
 export default function Vermais() {
     const [imoveis, setImoveis] = useState({})
@@ -28,20 +36,41 @@ export default function Vermais() {
         </div>
 
         <div className='w-[80%] mx-auto min-h-[700px] bg-[#ffffff] mt-[50px]'>
-            <div className='w-[100%] mx-auto min-h-[500px] bg-[#202020] mt-[50px]'>
+            <Swiper className='rounded-[5px] overflow-hidden '
+                modules={[Navigation, Pagination, Scrollbar, A11y]}
+                spaceBetween={50}
+                slidesPerView={1}
+                navigation
+                pagination={{ clickable: true }}
+                scrollbar={{ draggable: true }}
+                onSwiper={(swiper) => console.log(swiper)}
+                onSlideChange={() => console.log('slide change')}
+            >
+                
 
+                {imoveis.imagem?.map((img, index) => (
+                    <SwiperSlide className=' '>
+                       
+                        <div className='w-full xl:h-[90vh] lg:h-[80vh] md:h-[70vh] sm:h-[60vh] h-[300px]'>
+
+                            <img 
+                                key={index}
+                                className='w-full  h-full object-cover  rounded-[5px]  '
+                                src={`http://localhost:3000/imagem/${img.imagem}`} 
+                                alt={`Imagem ${index + 1} do imóvel`}
+                            />
+                        </div>
+                    </SwiperSlide>
+
+                    
+                    
+                ))}
+                
+            </Swiper>
               
-             {imoveis.imagem?.map((img, index) => (
-                <img 
-                    key={index}
-                    className='w-full h-auto min-h-[300px] object-cover rounded-[5px] opacity-[0.8] hover:opacity-[1] transition-opacity duration-500'
-                    src={`http://localhost:3000/imagem/${img.imagem}`} 
-                    alt={`Imagem ${index + 1} do imóvel`}
-                />
-            ))}
+             
 
             
-            </div>
 
             <div className='flex justify-between'>
 

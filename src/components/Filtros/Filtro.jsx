@@ -11,6 +11,13 @@ export default function Filtro({onFilter}) {
     e.preventDefault();
     onFilter({ valorMin, valorMax, quartos, bairro });
   };
+
+  const limpar = () => {
+    setValorMin('');
+    setValorMax('');
+    setQuartos('');
+    setBairro('');
+  };
   
   return (
     <div className='bg-[#ffffff] rounded-[5px] w-[80%] min-h-[120px] mx-auto p-4 flex justify-center  items-center relative top-[-60px] shadow-2xl'>
@@ -45,12 +52,7 @@ export default function Filtro({onFilter}) {
                   type="submit" 
                   value="Limpar Filtro" 
                   className='cursor-pointer text-[#2383a8] border-2  border-[#379fc9]  w-[150px] h-[40px] p-1 focus:outline-none rounded-[5px]'
-                  onClick={() => {
-                    setValorMin('');
-                    setValorMax('');
-                    setQuartos('');
-                    setBairro('');
-                  }} />
+                  onClick={limpar} />
           </form>
     </div>
   )
