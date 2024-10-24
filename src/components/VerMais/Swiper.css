@@ -1,6 +1,14 @@
-.swiper-wrapper{
-    /* justify-content: center; */
-    align-items: center;
-    /* background-color: blueviolet; */
-    max-height: 90vh;
+.swiper-wrapper {
+  /* justify-content: center; */
+  align-items: center;
+  /* background-color: blueviolet; */
+  max-height: 90vh;
+}
+
+.slide_conteudo > .swiper > .swiper-wrapper > .swiper-slide {
+  background-color: blue;
+  width: 250px !important;
+}
+.slide_conteudo > .swiper{
+    background-color: blue;
 }

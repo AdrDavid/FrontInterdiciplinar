@@ -50,19 +50,7 @@ export default function ImoveisAdmin() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log(e.target.cep.value);
-
-    // axios
-    //   .get(`https://brasilapi.com.br/api/cep/v2/${e.target.cep.value}`)
-    //   .then((res) => {
-    //     console.log(res.data);
-    //     console.log(res.data.state);
-    //     console.log(res.data.city);
-    //     console.log(res.data.neighborhood);
-    //     console.log(res.data.street);
-    //     console.log(res.data.location.coordinates.longitude);
-    //     console.log(res.data.location.coordinates.latitude);
-    //   });
+   
 
     const formData = new FormData();
 
@@ -72,11 +60,10 @@ export default function ImoveisAdmin() {
     formData.append("cidade", e.target.cidade.value);
     formData.append("estado", e.target.estado.value);
     formData.append("cep", cep);
-    formData.append("lat", latitude);
-    formData.append("long", longitude);
     formData.append("quartos", Number(e.target.quarto.value));
     formData.append("valor", e.target.valor.value);
     formData.append("texto", e.target.texto.value);
+    formData.append("numeroCasa", Number(e.target.numeroCasa.value));
 
     const files = e.target.img.files;
     for (let i = 0; i < files.length; i++) {
@@ -146,6 +133,13 @@ export default function ImoveisAdmin() {
             id=""
             value={rua}
             placeholder="Rua"
+            className="w-[100%] h-[50px] border-4 p-2 focus:outline-none mb-5"
+          />
+          <input
+            type="text"
+            name="numeroCasa"
+            id=""
+            placeholder="Numro da Casa"
             className="w-[100%] h-[50px] border-4 p-2 focus:outline-none mb-5"
           />
           <input
