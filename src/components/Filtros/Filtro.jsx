@@ -14,8 +14,8 @@ export default function Filtro({onFilter}) {
 
 
   const limpar = () => {
-    setValorMin(null);
-    setValorMax(null);
+    setValorMin("");
+    setValorMax("");
     setQuartos('');
     setBairro('');
   };
