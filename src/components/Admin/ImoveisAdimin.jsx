@@ -106,7 +106,7 @@ export default function ImoveisAdmin() {
   return (
     <div className="min-h-screen bg-neutral-50 px-4 py-12">
       <div className="max-w-4xl mx-auto space-y-12">
-        {/* Cabeçalho minimalista */}
+       
         <div className="flex justify-between items-center border-b border-neutral-200 pb-4">
           <h1 className="text-3xl font-thin text-neutral-800">Imóveis</h1>
           <button
@@ -117,7 +117,7 @@ export default function ImoveisAdmin() {
           </button>
         </div>
 
-        {/* Formulário com design minimalista */}
+        
         <form
           onSubmit={handleSubmit}
           encType="multipart/form-data"
