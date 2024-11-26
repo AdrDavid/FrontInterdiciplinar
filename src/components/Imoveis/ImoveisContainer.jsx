@@ -55,7 +55,7 @@ export default function ImoveisContainer({ filtros }) {
             <div className=" absolute bottom-2 left-[5%] bg-[#9c232300] w-[90%] flex flex-wrap gap-2 justify-center p-2 rounded-[5px]">
               <div className="w-[100%] h-[100%] absolute top-0 bg-[#ffffff23]  rounded-[10px] z-0 backdrop-blur-[5px]"></div>
               <p
-                className=" z-10 w-[100%] text-[#000000] text-center bg-[#e2e2e2e7] text-[14px] line-clamp-4  px-3 py-1   
+                className=" z-10 w-[100%] text-[#000000] text-[20px] font-bold text-center bg-[#e2e2e2e7] text-[14px] line-clamp-4  px-3 py-1   
                    rounded-[5px]"
               >
                 {imovel.valor

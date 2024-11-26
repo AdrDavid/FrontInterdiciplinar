@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import api from './api'
+import api from "./api";
 
 export default function ImoveisAdmin() {
   const [imoveis, setImoveis] = useState([]);
@@ -17,21 +17,18 @@ export default function ImoveisAdmin() {
   const [quartos, setQuartos] = useState("");
   const [valor, setValor] = useState("");
   const [texto, setTexto] = useState("");
-  const [imagens, setImagens] = useState([]);
-  const [area, setArea] = useState('');
+  const [area, setArea] = useState("");
   const [banheiro, setBanheiro] = useState("");
   const [garagem, setGaragem] = useState("");
 
-
   const handleLogout = () => {
     console.log("Logout iniciado. Removendo token do localStorage.");
-    localStorage.removeItem('token');
-    navigate('/login');
+    localStorage.removeItem("token");
+    navigate("/login");
   };
 
   useEffect(() => {
-    api.get("/imovel")
-      .then((res) => setImoveis(res.data));
+    api.get("/imovel").then((res) => setImoveis(res.data));
   }, [imoveis]);
 
   const deleteImovel = (id) => {
@@ -41,18 +38,16 @@ export default function ImoveisAdmin() {
   const buscarCep = (e) => {
     e.preventDefault();
 
-    axios
-      .get(`https://brasilapi.com.br/api/cep/v2/${cep}`)
-      .then((res) => {
-        console.log(res.data);
-        setRua(res.data.street);
-        setBairro(res.data.neighborhood);
-        setCidade(res.data.city);
-        setEstado(res.data.state);
-      });
+    axios.get(`https://brasilapi.com.br/api/cep/v2/${cep}`).then((res) => {
+      console.log(res.data);
+      setRua(res.data.street);
+      setBairro(res.data.neighborhood);
+      setCidade(res.data.city);
+      setEstado(res.data.state);
+    });
   };
 
-  const limpar = () => {
+  const limpar = (e) => {
     setNome("");
     setCep("");
     setRua("");
@@ -63,10 +58,10 @@ export default function ImoveisAdmin() {
     setQuartos("");
     setValor("");
     setTexto("");
-    setArea('');
-    setBanheiro('');
-    setGaragem('');
-    setImagens([]);
+    setArea("");
+    setBanheiro("");
+    setGaragem("");
+    e.target.img.value = null;
   };
 
   const handleSubmit = (e) => {
@@ -88,23 +83,24 @@ export default function ImoveisAdmin() {
     formData.append("banheiro", banheiro);
     formData.append("garagem", garagem);
 
-    const files = imagens;
+    const files = e.target.img.files;
     for (let i = 0; i < files.length; i++) {
       formData.append("imagem", files[i]);
     }
 
-    api.post("/imovel", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    })
-    .then((res) => {
-      console.log(res);
-      limpar();
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+    api
+      .post("/imovel", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        limpar(e);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -113,8 +109,8 @@ export default function ImoveisAdmin() {
         {/* Cabeçalho minimalista */}
         <div className="flex justify-between items-center border-b border-neutral-200 pb-4">
           <h1 className="text-3xl font-thin text-neutral-800">Imóveis</h1>
-          <button 
-            onClick={handleLogout} 
+          <button
+            onClick={handleLogout}
             className="px-4 py-2 text-neutral-600 hover:text-neutral-900 transition-colors"
           >
             Sair
@@ -122,9 +118,9 @@ export default function ImoveisAdmin() {
         </div>
 
         {/* Formulário com design minimalista */}
-        <form 
-          onSubmit={handleSubmit} 
-          encType="multipart/form-data" 
+        <form
+          onSubmit={handleSubmit}
+          encType="multipart/form-data"
           className="space-y-6 bg-white p-8 rounded-lg shadow-sm border border-neutral-100"
         >
           <div className="grid md:grid-cols-2 gap-6">
@@ -139,8 +135,7 @@ export default function ImoveisAdmin() {
             <input
               type="file"
               name="img"
-              // value={imagens}
-              onChange={(e) => setImagens(e.target.files)}
+              
               multiple
               className="w-full file:text-neutral-600 file:border-0 file:bg-transparent"
             />
@@ -156,8 +151,8 @@ export default function ImoveisAdmin() {
                 placeholder="CEP"
                 className="w-full border-b border-neutral-300 pb-2 focus:outline-none focus:border-black transition-colors"
               />
-              <button 
-                onClick={buscarCep} 
+              <button
+                onClick={buscarCep}
                 className="text-neutral-600 hover:text-neutral-900 transition-colors"
               >
                 Buscar
@@ -177,6 +172,7 @@ export default function ImoveisAdmin() {
             <input
               type="text"
               name="numeroCasa"
+              value={numeroCasa}
               onChange={(e) => setNumeroCasa(e.target.value)}
               placeholder="Número"
               className="w-full border-b border-neutral-300 pb-2 focus:outline-none focus:border-black transition-colors"
@@ -197,7 +193,7 @@ export default function ImoveisAdmin() {
               placeholder="Cidade"
               className="w-full border-b border-neutral-300 pb-2 bg-neutral-50 text-neutral-600"
             />
-          
+
             <input
               type="text"
               name="estado"
@@ -260,24 +256,23 @@ export default function ImoveisAdmin() {
             className="w-full border-b border-neutral-300 pb-2 h-32 focus:outline-none focus:border-black transition-colors"
           ></textarea>
 
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             className="w-full py-3 bg-neutral-800 text-white hover:bg-neutral-700 transition-colors"
           >
             Cadastrar Imóvel
           </button>
         </form>
 
-        {/* Lista de imóveis com design minimalista */}
         <div className="space-y-6">
           <h2 className="text-2xl font-thin text-neutral-800 border-b border-neutral-200 pb-4">
             Imóveis Cadastrados
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {imoveis.map((imovel) => (
-              <div 
-                key={imovel.id} 
-                className="bg-white border border-neutral-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+              <div
+                key={imovel.id}
+                className="bg-white border border-neutral-200  overflow-hidden shadow-sm hover:shadow-md transition-shadow"
               >
                 {imovel.imagem.length > 0 && (
                   <img
@@ -288,7 +283,9 @@ export default function ImoveisAdmin() {
                 )}
                 <div className="p-4 space-y-2">
                   <div className="flex justify-between items-center">
-                    <h3 className="text-lg font-medium text-neutral-800">{imovel.nome}</h3>
+                    <h3 className="text-lg font-medium text-neutral-800">
+                      {imovel.nome}
+                    </h3>
                     <button
                       onClick={() => deleteImovel(imovel.id)}
                       className="text-neutral-500 hover:text-red-500 transition-colors"
@@ -303,8 +300,6 @@ export default function ImoveisAdmin() {
                         .replace(".", ",")
                         .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
                     </p>
-                    <p>{imovel.quartos} Quartos</p>
-                    <p>{imovel.bairro}</p>
                   </div>
                 </div>
               </div>
