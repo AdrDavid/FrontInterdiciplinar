@@ -72,7 +72,7 @@ export default function Sobre() {
 
   return (
     <div className="m-auto mt-[100px]">
-      <div className="bg-[#4d4d4d] h-[70vh] min-h-[400px] bg-cover bg-sob flex justify-end">
+      <div className="bg-[#4d4d4d] lg:h-[700px] h-[70vh] min-h-[400px] bg-cover bg-sob flex justify-end">
         <div className="bg-[#8a8a8a0c] backdrop-blur-[7px] w-[40%] p-[10px] h-[100%]">
           <h1 className="text-[30px] text-[#000000] mt-[50px]">
             Quer vender seu imóvel?
