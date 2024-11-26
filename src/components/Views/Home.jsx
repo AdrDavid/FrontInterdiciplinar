@@ -6,7 +6,6 @@ import Filtro from "../Filtros/Filtro";
 import ImoveisContainer from "../Imoveis/ImoveisContainer";
 import Footer from "../Footer/Footer";
 import Sobre from "../Sobre/Sobre";
-import Condominios from "../Condominios/Condominio";
 export default function Home() {
   const [filtro, setFiltro] = useState({
     valorMin: "",
@@ -29,7 +28,7 @@ export default function Home() {
         />
         <div className=" relative z-10  pt-[8%]  h-[100%] w-[40%]">
           <h1 className="text-[60px] text-[#f1f1f1] text-center">
-            LOREM IPSUM
+            Imobiliaria ADR
           </h1>
         </div>
       </div>
@@ -39,7 +38,7 @@ export default function Home() {
       <ImoveisContainer filtros={filtro} />
 
       <div className="w-[100%] h-[150px]  relative "></div>
-      <Condominios />
+  
       <Sobre />
       <Footer />
     </div>

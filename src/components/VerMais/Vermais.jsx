@@ -1,24 +1,18 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 // import Map from '../Maps/Map'
-import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
-import { Swiper, SwiperSlide } from "swiper/react";
+// import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 import { Link, useParams } from "react-router-dom";
 import Footer from "../Footer/Footer";
 
-import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
+  import Wpp from './wpp.jsx' 
 
-import "./Swiper.css";
 
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/scrollbar";
 
-// Defina a sua chave da API do Google Maps
-const MAPS_API_KEY = "AIzaSyBaVjmtCCBw5ULjy8gwdntYwAme8ReB4jA";
+
+
+
 
 export default function Vermais() {
   const [imoveis, setImoveis] = useState({});
@@ -75,36 +69,29 @@ export default function Vermais() {
 
   //  //////////////////////////////
 
-  // Use o hook para carregar a API do Google Maps
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: MAPS_API_KEY,
-  });
-
+ 
+ 
   useEffect(() => {
     axios
       .get(`http://localhost:3000/imovel/${id}`)
       .then((res) => setImoveis(res.data));
   }, [id]);
 
-  const responsive = {
-    superLargeDesktop: {
-      // the naming can be any, depends on you.
-      breakpoint: { max: 4000, min: 3000 },
-      items: 5,
-    },
-    desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 3,
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 2,
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 1,
-    },
-  };
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const nextImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      (prevIndex + 1) % imoveis.imagem.length
+    );
+  }
+
+  const prevImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === 0? imoveis.imagem.length - 1 : prevIndex - 1
+    );
+  }
+
 
   return (
     <>
@@ -117,122 +104,179 @@ export default function Vermais() {
           Home
         </Link>
       </div>
-      <div className=" slide_G w-[80%] mx-auto min-h-[700px] bg-[#ffffff] mt-[50px]">
-        <Swiper
-          className="rounded-[5px] overflow-hidden "
-          modules={[Navigation, Pagination, Scrollbar, A11y]}
-          spaceBetween={50}
-          slidesPerView={1}
-          navigation
-          pagination={{ clickable: true }}
-          scrollbar={{ draggable: true }}
-          onSwiper={(swiper) => console.log(swiper)}
-          onSlideChange={() => console.log("slide change")}
-        >
+
+      <div className="w-[80%] mx-auto min-h-[700px] bg-[#ffffff] mt-[50px]">
+
+      <div className="relative" w-full max-w-xl mx-auto>
+      <div className="relative overflow-hidden rounded-lg shadow-md" style={{ height: '720px' }}>
           {imoveis.imagem?.map((img, index) => (
-            <SwiperSlide className=" " key={index}>
-              <div className="w-full xl:h-[90vh] lg:h-[80vh] md:h-[70vh] sm:h-[60vh] h-[300px]">
+              <div
+                key={index}
+                className={`absolute w-full h-full transition-all duration-500 ease-in-out ${
+                  index === currentImageIndex ? 'left-0' : index < currentImageIndex ? '-left-full' : 'left-full'
+                }`}
+              >
                 <img
-                  className="w-full  h-full object-cover  rounded-[5px]  "
+                  className="w-full h-full object-cover rounded-[5px]"
                   src={`http://localhost:3000/imagem/${img.imagem}`}
                   alt={`Imagem ${index + 1} do imóvel`}
                 />
               </div>
-            </SwiperSlide>
           ))}
-        </Swiper>
-        <br />
-        <br />
-        <div>
-          <h1 className="text-[26px] text-[#1d1d1d]">
-            Deixa eu te mostrar um pouco mais <br /> sobre este lindo imóvel!
-          </h1>
-          <hr />
 
-          <div>
-            <p className="text-[#2e2e2e] text-[18px] ">
-              Pra começar esse imóvel tem a seguinte Localização:
-            </p>
-            <p>
-              Rua: {imoveis.rua} - N: {imoveis.numero}
-            </p>
-            <p>Bairro: {imoveis.bairro}</p>
-            <p>
-              Cidade: {imoveis.cidade} - {imoveis.estado}
-            </p>
-          </div>
-          <hr />
-          <br />
-          <br />
-          <div className="w-[100%] max-w-[1200px]  min-h-[200px] m-auto">
-            <p className="text-[#000000] text-[22px] text-center">
-              Este imóvel lhe entrega
-            </p>
-            <br />
+      <button 
+          onClick={prevImage}
+          className="absolute top-1/2 left-2 transform -translate-y-1/2 
+                     bg-white/50 rounded-full p-2 hover:bg-white/75 transition"
+        >
+          <ChevronLeft className="text-gray-800" />
+        </button>
 
-            <div className=" slide_conteudo w-[100%] 2xl:min-w-[1200px] xl:min-w-[1200px] lg:min-w-[900px] flex flex-wrap justify-center gap-3 mt-[20px] ">
-              <div className="w-[250px] h-[360px] bg-[#000000] rounded-[5px]  relative ">
-                <h1 className=" z-10 text-[26px] text-[#ffffff] absolute top-[5px] left-[5px] ">
-                  Conteudo
-                </h1>
-                <img
-                  className="absolute top-0 left-0 w-[100%] h-[100%] object-cover rounded-[5px] opacity-[0.7] hover:opacity-[1] transition-opacity duration-500"
-                  src="https://i.pinimg.com/control/236x/c9/50/59/c9505967bca9deb510eaf0339c98d867.jpg"
-                  alt=""
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+        <button 
+          onClick={nextImage}
+          className="absolute top-1/2 right-2 transform -translate-y-1/2 
+                     bg-white rounded-full p-2 hover:bg-white/75 transition"
+        >
+          <ChevronRight className="text-gray-800" />
+        </button>
+  </div>
 
-        <div className="xl:w-[40%] sm:w-[100%] mx-auto pl-[20px]  bg-[#ffffff] ">
-          <h1 className="text-[26px] text-[#1d1d1d]  mx-auto">
-            Está interessado nesse imóvel?
-          </h1>
-          <br />
-          <form action="" className=" mx-auto" onSubmit={formSubmit}>
-            <input
-              type="email"
-              name="email"
-              id=""
-              placeholder="Email"
-              className="w-[100%] h-[50px] border-4 p-2 focus:outline-none mb-5"
-            />
-            <input
-              type="text"
-              name="nome"
-              id=""
-              placeholder="Nome"
-              className="w-[100%] h-[50px] border-4 p-2 focus:outline-none mb-5"
-            />
-            <input
-              type="numero"
-              name="telefone"
-              id=""
-              placeholder="Seu Telefone"
-              className="w-[100%] h-[50px] border-4 p-2 focus:outline-none mb-5"
-            />
-            <textarea
-              name="texto"
-              id=""
-              className="w-[100%] min-h-[100px] border-4 p-2 focus:outline-none mb-5"
-            ></textarea>
-
-            {loading && <p className="text-[20px]">Carregando...</p>}
-            <input
-              type="submit"
-              value="Enviar"
-              className="w-[100%] h-[50px] border-4 p-2 focus:outline-none mb-5 cursor-pointer"
-            />
-          </form>
-        </div>
+         <div className="flex justify-center mt-4 space-x-2"> 
+                {imoveis.imagem?.map((_, index) => (
+                  <button key={index}
+                    onClick={() => setCurrentImageIndex(index)}
+                    className={`w-3 h-3 rounded-full ${
+                      index === currentImageIndex 
+                        ? 'bg-blue-600' 
+                        : 'bg-gray-300'
+                    }`}
+                  ></button>
+                ))}
+         </div>
       </div>
-      ;
-      <br />
-      <br />
-      <br />
-      <br />
+
+
+
+     
+          <br />
+          <br />
+          <br />
+          {/* bg-[#bf982c] */}
+          <div className="w-[100%]  min-h-[400px] mx-auto pl-[20px]  flex flex-wrap   ">
+            <div className="w-[100%]  xl:w-[50%]  ">
+            <h1 className="text-[30px] text-[#1d1d1d] text-bold  mx-auto">{imoveis.nome}</h1>
+                <br />
+                <h1 className="text-[28px] text-[#3e86cf] text-bold  mx-auto">R$ {imoveis.valor?.toString()
+                  .replace(".", ",")
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}</h1>
+                <br />  
+                  <div className="flex gap-5">
+                  <div className="w-[200px] p-[10px] bg-[#7aacde] flex justify-center rounded-[5px]">
+                      <h1 className="text-[20px] text-[#ffffff] text-bold  mx-auto">Quartos: {imoveis.quartos}</h1>
+                  </div>
+                  <div className="w-[200px] p-[10px] bg-[#7aacde] flex justify-center rounded-[5px]">
+                      <h1 className="text-[20px] text-[#ffffff] text-bold  mx-auto">Banheiro: {imoveis.banheiro}</h1>
+                  </div>
+                  <div className="w-[200px] p-[10px] bg-[#7aacde] flex justify-center rounded-[5px]">
+                      <h1 className="text-[20px] text-[#ffffff] text-bold  mx-auto">Garagem: {imoveis.garagem}</h1>
+                  </div>
+                  <div className="w-[200px] p-[10px] bg-[#7aacde] flex justify-center rounded-[5px]">
+                      <h1 className="text-[20px] text-[#ffffff] text-bold  mx-auto">Area: {imoveis.area}</h1>
+                  </div>
+               
+
+                  </div>
+
+
+                <br />
+                
+                
+                <div className="flex gap-5 flex-wrap">
+
+              
+                  <div className="min-w-[200px] p-[10px] bg-[#e4e7eb] flex justify-center rounded-[5px]">
+                      <h1 className="text-[20px] text-[#1d1d1d] text-bold  mx-auto">Estado: {imoveis.estado}</h1>
+                  </div>
+                  <div className="min-w-[200px] p-[10px] bg-[#e4e7eb] flex justify-center rounded-[5px]">
+                      <h1 className="text-[20px] text-[#1d1d1d] text-bold  mx-auto">Cidade: {imoveis.cidade}</h1>
+                  </div>
+                  <div className="min-w-[200px] p-[10px] bg-[#e4e7eb] flex justify-center rounded-[5px]">
+                      <h1 className="text-[20px] text-[#1d1d1d] text-bold  mx-auto">{imoveis.bairro}</h1>
+                  </div>
+                  <div className="min-w-[200px] p-[10px] bg-[#e4e7eb] flex justify-center rounded-[5px]">
+                      <h1 className="text-[20px] text-[#1d1d1d] text-bold  mx-auto"> {imoveis.rua} - {imoveis.numeroCasa}</h1>
+                  </div>
+                  <Wpp phoneNumber={5566992129562}
+                 
+                 message={`Ola, gostaria de saber mais sobre o imovel:\n ${imoveis.nome} \n R$ ${imoveis.valor?.toString()
+                   .replace(".", ",")
+                   .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}\n quartos: ${imoveis.quartos} \n endereco: ${imoveis.rua}, ${imoveis.bairro}, ${imoveis.numeroCasa} ${imoveis.cidade}, ${imoveis.estado}\n} `} ></Wpp>
+                 
+                </div>
+                <br />
+                
+            </div>
+            <div className="w-[100%] xl:w-[50%]    pl-[20px] text-[25px] text-[#5c5c5c]  ">
+                <p>{imoveis.texto}</p>
+            </div>
+               
+                  
+          </div>
+
+                  <br />
+                  <br />
+                  <br />
+                  <br />
+
+      </div>
+        <div className="w-[100%] sm:w-[100%] mx-auto px-[20px] py-[40px]  bg-[#e4e7eb] ">
+            <form action="" className=" mx-auto w-[40%]" onSubmit={formSubmit}>
+            <h1 className="text-[26px] text-[#1d1d1d]  mx-auto">
+              Está interessado nesse imóvel?
+            </h1>
+            <br />
+              <input
+                type="email"
+                name="email"
+                id=""
+                placeholder="Email"
+                className="w-[100%] h-[50px]  p-2 focus:outline-none mb-5"
+              />
+              <input
+                type="text"
+                name="nome"
+                id=""
+                placeholder="Nome"
+                className="w-[100%] h-[50px] p-2 focus:outline-none mb-5"
+              />
+              <input
+                type="numero"
+                name="telefone"
+                id=""
+                placeholder="Seu Telefone"
+                className="w-[100%] h-[50px]  p-2 focus:outline-none mb-5"
+              />
+              <textarea
+                name="texto"
+                id=""
+                className="w-[100%] min-h-[100px]  p-2 focus:outline-none mb-5"
+              ></textarea>
+
+              {loading && <p className="text-[20px]">Carregando...</p>}
+              <input
+                type="submit"
+                value="Enviar"
+                className="w-[100%] h-[50px] text-[20px] text-[#ffffff] text-bold bg-[#7aacde] border-4 p-2 focus:outline-none mb-5 cursor-pointer"
+              />
+            </form>
+          </div>
+
+      
+      
       <Footer />
+
+      <br />
+      
     </>
   );
 }

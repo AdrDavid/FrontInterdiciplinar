@@ -4,8 +4,10 @@ import App from './App.jsx'
 import './index.css'
 import VerMAis from './components/VerMais/Vermais'
 import ImoveisAdmin from './components/Admin/ImoveisAdimin'
+import Login from './components/Admin/Login.jsx'
+import PrivateRoute from './components/Admin/PrivateRoute.jsx'
 import Home from './components/Views/Home'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider,  } from 'react-router-dom'
 
 const router = createBrowserRouter([
   {
@@ -22,8 +24,21 @@ const router = createBrowserRouter([
      },
      {
       path: '/criar',
-      element: <ImoveisAdmin />
-    }
+      element:(
+        
+        <PrivateRoute>
+
+          <ImoveisAdmin />
+        </PrivateRoute>
+    
+        
+      )
+    },
+    {
+      path: '/login',
+      element: <Login />
+    },
+   
 
     ],
   },

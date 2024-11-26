@@ -1,31 +1,41 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import axios from "axios";
+import api from './api'
 
 export default function ImoveisAdmin() {
   const [imoveis, setImoveis] = useState([]);
+  const navigate = useNavigate();
 
-
+  const [nome, setNome] = useState("");
+  const [cep, setCep] = useState("");
   const [rua, setRua] = useState("");
   const [bairro, setBairro] = useState("");
   const [cidade, setCidade] = useState("");
   const [estado, setEstado] = useState("");
-  const [latitude, setLatitude] = useState("");
-  const [longitude, setLongitude] = useState("");
-  const [cep, setCep] = useState();
+  const [numeroCasa, setNumeroCasa] = useState("");
+  const [quartos, setQuartos] = useState("");
+  const [valor, setValor] = useState("");
+  const [texto, setTexto] = useState("");
+  const [imagens, setImagens] = useState([]);
+  const [area, setArea] = useState('');
+  const [banheiro, setBanheiro] = useState("");
+  const [garagem, setGaragem] = useState("");
 
-  
 
-
-
+  const handleLogout = () => {
+    console.log("Logout iniciado. Removendo token do localStorage.");
+    localStorage.removeItem('token');
+    navigate('/login');
+  };
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3000/imovel")
+    api.get("/imovel")
       .then((res) => setImoveis(res.data));
   }, [imoveis]);
 
   const deleteImovel = (id) => {
-    axios.delete(`http://localhost:3000/imovel/${id}`);
+    api.delete(`/imovel/${id}`);
   };
 
   const buscarCep = (e) => {
@@ -39,219 +49,269 @@ export default function ImoveisAdmin() {
         setBairro(res.data.neighborhood);
         setCidade(res.data.city);
         setEstado(res.data.state);
-        setLatitude(res.data.location.coordinates.latitude);
-        setLongitude(res.data.location.coordinates.longitude);
-        
-      })
-      // console.log("Listando " + rua);
+      });
+  };
 
-    
+  const limpar = () => {
+    setNome("");
+    setCep("");
+    setRua("");
+    setBairro("");
+    setCidade("");
+    setEstado("");
+    setNumeroCasa("");
+    setQuartos("");
+    setValor("");
+    setTexto("");
+    setArea('');
+    setBanheiro('');
+    setGaragem('');
+    setImagens([]);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-   
 
     const formData = new FormData();
 
-    formData.append("nome", e.target.nome.value);
-    formData.append("rua", e.target.rua.value);
-    formData.append("bairro", e.target.bairro.value);
-    formData.append("cidade", e.target.cidade.value);
-    formData.append("estado", e.target.estado.value);
+    formData.append("nome", nome);
     formData.append("cep", cep);
-    formData.append("quartos", Number(e.target.quarto.value));
-    formData.append("valor", e.target.valor.value);
-    formData.append("texto", e.target.texto.value);
-    formData.append("numeroCasa", Number(e.target.numeroCasa.value));
+    formData.append("rua", rua);
+    formData.append("bairro", bairro);
+    formData.append("cidade", cidade);
+    formData.append("estado", estado);
+    formData.append("numeroCasa", numeroCasa);
+    formData.append("quartos", quartos);
+    formData.append("valor", valor);
+    formData.append("texto", texto);
+    formData.append("area", area);
+    formData.append("banheiro", banheiro);
+    formData.append("garagem", garagem);
 
-    const files = e.target.img.files;
+    const files = imagens;
     for (let i = 0; i < files.length; i++) {
       formData.append("imagem", files[i]);
     }
 
-    // Envie o FormData
-    axios
-      .post("http://localhost:3000/imovel", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    api.post("/imovel", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((res) => {
+      console.log(res);
+      limpar();
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   };
 
   return (
-    <>
-      <div className="w-[100%]  min-w-[500px] mx-auto py-20 bg-[#8f8f8f]">
-      
-        <form
-          action=""
-          className="w-[60%] mx-auto"
-          onSubmit={handleSubmit}
-          encType="multipart/form-data"
-        >
-          <input
-            type="text"
-            name="nome"
-            id=""
-            placeholder="Nome"
-            className="w-[100%] h-[50px] border-4 p-2 focus:outline-none mb-5"
-            value="Sobrado Miranda"
-          />
-          <input
-            type="file"
-            name="img"
-            id=""
-            className="w-[100%] h-[50px] border-4 mb-5"
-            multiple
-          />
-          
-          <div className="w-[100%] flex">
-            <input
-              type="number"
-              name="cep"
-              id=""
-              value={cep}
-              placeholder="Cep"
-              className="w-[85%] h-[50px] border-4 p-2 focus:outline-none mb-5"
-              onChange={(e) => setCep(e.target.value)}
-            />
+    <div className="min-h-screen bg-neutral-50 px-4 py-12">
+      <div className="max-w-4xl mx-auto space-y-12">
+        {/* Cabeçalho minimalista */}
+        <div className="flex justify-between items-center border-b border-neutral-200 pb-4">
+          <h1 className="text-3xl font-thin text-neutral-800">Imóveis</h1>
+          <button 
+            onClick={handleLogout} 
+            className="px-4 py-2 text-neutral-600 hover:text-neutral-900 transition-colors"
+          >
+            Sair
+          </button>
+        </div>
 
-            <button onClick={buscarCep} className="w-[15%] h-[50px] border-4 flex justify-center items-center cursor-pointer">
-              Buscar
-            </button>
+        {/* Formulário com design minimalista */}
+        <form 
+          onSubmit={handleSubmit} 
+          encType="multipart/form-data" 
+          className="space-y-6 bg-white p-8 rounded-lg shadow-sm border border-neutral-100"
+        >
+          <div className="grid md:grid-cols-2 gap-6">
+            <input
+              type="text"
+              name="nome"
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+              placeholder="Nome do Imóvel"
+              className="w-full border-b border-neutral-300 pb-2 focus:outline-none focus:border-black transition-colors"
+            />
+            <input
+              type="file"
+              name="img"
+              // value={imagens}
+              onChange={(e) => setImagens(e.target.files)}
+              multiple
+              className="w-full file:text-neutral-600 file:border-0 file:bg-transparent"
+            />
           </div>
 
-          <input
-            type="text"
-            name="rua"
-            id=""
-            value={rua}
-            placeholder="Rua"
-            className="w-[100%] h-[50px] border-4 p-2 focus:outline-none mb-5"
-          />
-          <input
-            type="text"
-            name="numeroCasa"
-            id=""
-            placeholder="Numro da Casa"
-            className="w-[100%] h-[50px] border-4 p-2 focus:outline-none mb-5"
-          />
-          <input
-            type="text"
-            name="bairro"
-            id=""
-            value={bairro}
-            placeholder="Bairro"
-            className="w-[100%] h-[50px] border-4 p-2 focus:outline-none mb-5"
-          />
-          <input
-            type="text"
-            name="cidade"
-            id=""
-            value={cidade}
-            placeholder="Cidade"
-            className="w-[100%] h-[50px] border-4 p-2 focus:outline-none mb-5"
-          />
-          <input
-            type="text"
-            name="estado"
-            id=""
-            value={estado}
-            placeholder="Estado"
-            className="w-[100%] h-[50px] border-4 p-2 focus:outline-none mb-5"
-          />
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="flex items-center space-x-2">
+              <input
+                type="text"
+                name="cep"
+                value={cep}
+                onChange={(e) => setCep(e.target.value)}
+                placeholder="CEP"
+                className="w-full border-b border-neutral-300 pb-2 focus:outline-none focus:border-black transition-colors"
+              />
+              <button 
+                onClick={buscarCep} 
+                className="text-neutral-600 hover:text-neutral-900 transition-colors"
+              >
+                Buscar
+              </button>
+            </div>
+            <input
+              type="text"
+              name="rua"
+              value={rua}
+              readOnly
+              placeholder="Rua"
+              className="w-full border-b border-neutral-300 pb-2 bg-neutral-50 text-neutral-600"
+            />
+          </div>
 
-          <input
-            type="number"
-            name="quarto"
-            id=""
-            placeholder="Quartos"
-            className="w-[100%] h-[50px] border-4 p-2 focus:outline-none mb-5"
-            value="2"
-          />
-          <input
-            type="number"
-            name="valor"
-            id=""
-            placeholder="Valor"
-            className="w-[100%] h-[50px] border-4 p-2 focus:outline-none mb-5"
-            value="200000.15"
-          />
+          <div className="grid md:grid-cols-3 gap-6">
+            <input
+              type="text"
+              name="numeroCasa"
+              onChange={(e) => setNumeroCasa(e.target.value)}
+              placeholder="Número"
+              className="w-full border-b border-neutral-300 pb-2 focus:outline-none focus:border-black transition-colors"
+            />
+            <input
+              type="text"
+              name="bairro"
+              value={bairro}
+              readOnly
+              placeholder="Bairro"
+              className="w-full border-b border-neutral-300 pb-2 bg-neutral-50 text-neutral-600"
+            />
+            <input
+              type="text"
+              name="cidade"
+              value={cidade}
+              readOnly
+              placeholder="Cidade"
+              className="w-full border-b border-neutral-300 pb-2 bg-neutral-50 text-neutral-600"
+            />
+          
+            <input
+              type="text"
+              name="estado"
+              value={estado}
+              readOnly
+              placeholder="Cidade"
+              className="w-full border-b border-neutral-300 pb-2 bg-neutral-50 text-neutral-600"
+            />
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <input
+              type="number"
+              name="quarto"
+              value={quartos}
+              onChange={(e) => setQuartos(e.target.value)}
+              placeholder="Quartos"
+              className="w-full border-b border-neutral-300 pb-2 focus:outline-none focus:border-black transition-colors"
+            />
+            <input
+              type="text"
+              name="area"
+              value={area}
+              onChange={(e) => setArea(e.target.value)}
+              placeholder="Area"
+              className="w-full border-b border-neutral-300 pb-2 focus:outline-none focus:border-black transition-colors"
+            />
+            <input
+              type="number"
+              name="banheiros"
+              value={banheiro}
+              onChange={(e) => setBanheiro(e.target.value)}
+              placeholder="Banheiros"
+              className="w-full border-b border-neutral-300 pb-2 focus:outline-none focus:border-black transition-colors"
+            />
+            <input
+              type="number"
+              name="garagem"
+              value={garagem}
+              onChange={(e) => setGaragem(e.target.value)}
+              placeholder="Garagens"
+              className="w-full border-b border-neutral-300 pb-2 focus:outline-none focus:border-black transition-colors"
+            />
+            <input
+              type="number"
+              name="valor"
+              value={valor}
+              onChange={(e) => setValor(e.target.value)}
+              placeholder="Valor"
+              step="0.01"
+              className="w-full border-b border-neutral-300 pb-2 focus:outline-none focus:border-black transition-colors"
+            />
+          </div>
+
           <textarea
             name="texto"
-            id=""
-            className="w-[100%] h-[120px]  border-4 p-2 focus:outline-none mb-5"
+            value={texto}
+            onChange={(e) => setTexto(e.target.value)}
+            placeholder="Descrição"
+            className="w-full border-b border-neutral-300 pb-2 h-32 focus:outline-none focus:border-black transition-colors"
           ></textarea>
-          <input
-            type="submit"
-            value="Enviar"
-            className="w-[100%] h-[50px] border-4 p-2 focus:outline-none mb-5 cursor-pointer"
-          />
+
+          <button 
+            type="submit" 
+            className="w-full py-3 bg-neutral-800 text-white hover:bg-neutral-700 transition-colors"
+          >
+            Cadastrar Imóvel
+          </button>
         </form>
-      </div>
 
-      <div className="bg-[#af525200] min-h-[400px] relative  mt-[40px] ">
-        <div className=" z-10 w-[80%] bg-[#91e91e00] flex flex-wrap justify-center gap-3 mx-auto">
-          {imoveis.map((imovel) => (
-            <div
-              className=" bg-[#000000e7]  w-full max-w-[24%] sm:w-1/3  rounded-[5px] relative shadow-[5px_5px_10px_0px_rgba(0,0,0,0.18)]"
-              key={imovel.id}
-            >
-              <p
-                className="z-10 w-[100%] text-[#000000] text-center bg-[#e2e2e2e7] text-[14px] line-clamp-4  px-3 py-1  absolute top-[-30px] 
-                       rounded-[5px]"
+        {/* Lista de imóveis com design minimalista */}
+        <div className="space-y-6">
+          <h2 className="text-2xl font-thin text-neutral-800 border-b border-neutral-200 pb-4">
+            Imóveis Cadastrados
+          </h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {imoveis.map((imovel) => (
+              <div 
+                key={imovel.id} 
+                className="bg-white border border-neutral-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
               >
-                {imovel.nome}
-              </p>
-              <button
-                className="z-10 absolute top-2 right-2 bg-[#000000] text-[#ffffff] p-1 rounded-[5px] hover:bg-[#ffffff] hover:text-[#000000]"
-                onClick={() => deleteImovel(imovel.id)}
-              >
-                DELETAR
-              </button>
-
-              {imovel.imagem.length > 0 && (
-                <img
-                  className=" w-full h-auto min-h-[300px] object-cover rounded-[5px]  "
-                  src={`http://localhost:3000/imagem/${imovel.imagem[0].imagem}`}
-                  alt=""
-                />
-              )}
-
-              <div className=" absolute bottom-2 left-[5%] bg-[#9c232300] w-[90%] flex flex-wrap gap-2 justify-center p-2 rounded-[5px]">
-                <div className="w-[100%] h-[100%] absolute top-0 bg-[#ffffff42]  rounded-[10px] z-0 blur-[5px]"></div>
-                <p
-                  className=" z-10 w-[100%] text-[#000000] text-center bg-[#e2e2e2e7] text-[14px] line-clamp-4  px-3 py-1   
-                       rounded-[5px]"
-                >
-                  {imovel.valor
-                    .toString()
-                    .replace(".", ",")
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
-                </p>
-                <p
-                  className="z-10 w-[100%] text-[#000000] text-center bg-[#e2e2e2e7] text-[14px] line-clamp-4  px-3 py-1   
-                       rounded-[5px]"
-                >
-                  {imovel.quartos} Quartos
-                </p>
-                <p
-                  className="z-10 w-[100%] text-[#000000] text-center bg-[#e2e2e2e7] text-[14px] line-clamp-4  px-3 py-1   
-                       rounded-[5px]"
-                >
-                  {imovel.bairro}
-                </p>
+                {imovel.imagem.length > 0 && (
+                  <img
+                    className="w-full h-48 object-cover"
+                    src={`http://localhost:3000/imagem/${imovel.imagem[0].imagem}`}
+                    alt=""
+                  />
+                )}
+                <div className="p-4 space-y-2">
+                  <div className="flex justify-between items-center">
+                    <h3 className="text-lg font-medium text-neutral-800">{imovel.nome}</h3>
+                    <button
+                      onClick={() => deleteImovel(imovel.id)}
+                      className="text-neutral-500 hover:text-red-500 transition-colors"
+                    >
+                      Excluir
+                    </button>
+                  </div>
+                  <div className="text-neutral-600 space-y-1">
+                    <p>
+                      {imovel.valor
+                        .toString()
+                        .replace(".", ",")
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}
+                    </p>
+                    <p>{imovel.quartos} Quartos</p>
+                    <p>{imovel.bairro}</p>
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

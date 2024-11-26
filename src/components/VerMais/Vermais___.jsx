@@ -6,6 +6,10 @@ import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Link, useParams } from "react-router-dom";
 import Footer from "../Footer/Footer";
+
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+
 import "./Swiper.css";
 
 import "swiper/css";
@@ -13,12 +17,8 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 
-
-
-
-
 // Defina a sua chave da API do Google Maps
-const MAPS_API_KEY = 'AIzaSyBaVjmtCCBw5ULjy8gwdntYwAme8ReB4jA';
+const MAPS_API_KEY = "AIzaSyBaVjmtCCBw5ULjy8gwdntYwAme8ReB4jA";
 
 export default function Vermais() {
   const [imoveis, setImoveis] = useState({});
@@ -86,7 +86,25 @@ export default function Vermais() {
       .then((res) => setImoveis(res.data));
   }, [id]);
 
-
+  const responsive = {
+    superLargeDesktop: {
+      // the naming can be any, depends on you.
+      breakpoint: { max: 4000, min: 3000 },
+      items: 5,
+    },
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 3,
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 2,
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1,
+    },
+  };
 
   return (
     <>
@@ -99,8 +117,7 @@ export default function Vermais() {
           Home
         </Link>
       </div>
-
-      <div className="w-[80%] mx-auto min-h-[700px] bg-[#ffffff] mt-[50px]">
+      <div className=" slide_G w-[80%] mx-auto min-h-[700px] bg-[#ffffff] mt-[50px]">
         <Swiper
           className="rounded-[5px] overflow-hidden "
           modules={[Navigation, Pagination, Scrollbar, A11y]}
@@ -124,108 +141,98 @@ export default function Vermais() {
             </SwiperSlide>
           ))}
         </Swiper>
+        <br />
+        <br />
+        <div>
+          <h1 className="text-[26px] text-[#1d1d1d]">
+            Deixa eu te mostrar um pouco mais <br /> sobre este lindo imóvel!
+          </h1>
+          <hr />
 
-        <div className="flex justify-between flex-wrap gap-[2%] mt-[20px]">
-          <div className="flex xl:w-[58%] sm:w-[100%] flex-wrap">
-            <div className="w-[100%] sm:w-[50%] mx-auto mb-[20px]  bg-[#ffffff] ">
-              <div></div>
-              <p className="text-[22px]">
-                <span className="text-[22px] text-[#1f1f1f]">Rua: </span>
-                {imoveis.rua}
-              </p>
-              <br />
-              <p className="text-[22px]">
-                <span className="text-[22px] text-[#1f1f1f]">N: </span>
-                {imoveis.numeroCasa}
-              </p>
-              <br />
-              <p className="text-[22px]">
-                <span className="text-[22px] text-[#1f1f1f]">Bairro: </span>
-                {imoveis.bairro}
-              </p>
-              <br />
-              <p className="text-[22px]">
-                <span className="text-[22px] text-[#1f1f1f]">Cidade: </span>
-                {imoveis.cidade}
-              </p>
-              <br />
-              <p className="text-[22px]">
-                <span className="text-[22px] text-[#1f1f1f]">Estado: </span>
-                {imoveis.estado}
-              </p>
-              <br />
-              <p className="text-[22px]">
-                <span className="text-[22px] text-[#1f1f1f]">Quartos: </span>
-                {imoveis.quartos}
-              </p>
-              <br />
-              <p className="text-[22px]">
-                <span className="text-[22px] text-[#1f1f1f]">Valor: </span>
-                {imoveis.valor
-                  ?.toString()
-                  .replace(".", ",")
-                  .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")}
-              </p>
-            </div>
-
-            <div className="w-[100%] sm:w-[50%] mx-auto  bg-[#ffffff] mb-[20px]">
-              <p className="text-[20px] text-justify  text-[#1f1f1f]">
-                {imoveis.texto}
-              </p>
-            </div>
+          <div>
+            <p className="text-[#2e2e2e] text-[18px] ">
+              Pra começar esse imóvel tem a seguinte Localização:
+            </p>
+            <p>
+              Rua: {imoveis.rua} - N: {imoveis.numero}
+            </p>
+            <p>Bairro: {imoveis.bairro}</p>
+            <p>
+              Cidade: {imoveis.cidade} - {imoveis.estado}
+            </p>
           </div>
-
-          <div className="xl:w-[40%] sm:w-[100%] mx-auto pl-[20px]  bg-[#ffffff] ">
-            <h1 className="text-[26px] text-[#1d1d1d]  mx-auto">
-              Está interessado nesse imóvel?
-            </h1>
+          <hr />
+          <br />
+          <br />
+          <div className="w-[100%] max-w-[1200px]  min-h-[200px] m-auto">
+            <p className="text-[#000000] text-[22px] text-center">
+              Este imóvel lhe entrega
+            </p>
             <br />
-            <form action="" className=" mx-auto" onSubmit={formSubmit}>
-              <input
-                type="email"
-                name="email"
-                id=""
-                placeholder="Email"
-                className="w-[100%] h-[50px] border-4 p-2 focus:outline-none mb-5"
-              />
-              <input
-                type="text"
-                name="nome"
-                id=""
-                placeholder="Nome"
-                className="w-[100%] h-[50px] border-4 p-2 focus:outline-none mb-5"
-              />
-              <input
-                type="numero"
-                name="telefone"
-                id=""
-                placeholder="Seu Telefone"
-                className="w-[100%] h-[50px] border-4 p-2 focus:outline-none mb-5"
-              />
-              <textarea
-                name="texto"
-                id=""
-                className="w-[100%] min-h-[100px] border-4 p-2 focus:outline-none mb-5"
-              ></textarea>
 
-              {loading && <p className="text-[20px]">Carregando...</p>}
-              <input
-                type="submit"
-                value="Enviar"
-                className="w-[100%] h-[50px] border-4 p-2 focus:outline-none mb-5 cursor-pointer"
-              />
-            </form>
+            <div className=" slide_conteudo w-[100%] 2xl:min-w-[1200px] xl:min-w-[1200px] lg:min-w-[900px] flex flex-wrap justify-center gap-3 mt-[20px] ">
+              <div className="w-[250px] h-[360px] bg-[#000000] rounded-[5px]  relative ">
+                <h1 className=" z-10 text-[26px] text-[#ffffff] absolute top-[5px] left-[5px] ">
+                  Conteudo
+                </h1>
+                <img
+                  className="absolute top-0 left-0 w-[100%] h-[100%] object-cover rounded-[5px] opacity-[0.7] hover:opacity-[1] transition-opacity duration-500"
+                  src="https://i.pinimg.com/control/236x/c9/50/59/c9505967bca9deb510eaf0339c98d867.jpg"
+                  alt=""
+                />
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      
+        <div className="xl:w-[40%] sm:w-[100%] mx-auto pl-[20px]  bg-[#ffffff] ">
+          <h1 className="text-[26px] text-[#1d1d1d]  mx-auto">
+            Está interessado nesse imóvel?
+          </h1>
+          <br />
+          <form action="" className=" mx-auto" onSubmit={formSubmit}>
+            <input
+              type="email"
+              name="email"
+              id=""
+              placeholder="Email"
+              className="w-[100%] h-[50px] border-4 p-2 focus:outline-none mb-5"
+            />
+            <input
+              type="text"
+              name="nome"
+              id=""
+              placeholder="Nome"
+              className="w-[100%] h-[50px] border-4 p-2 focus:outline-none mb-5"
+            />
+            <input
+              type="numero"
+              name="telefone"
+              id=""
+              placeholder="Seu Telefone"
+              className="w-[100%] h-[50px] border-4 p-2 focus:outline-none mb-5"
+            />
+            <textarea
+              name="texto"
+              id=""
+              className="w-[100%] min-h-[100px] border-4 p-2 focus:outline-none mb-5"
+            ></textarea>
+
+            {loading && <p className="text-[20px]">Carregando...</p>}
+            <input
+              type="submit"
+              value="Enviar"
+              className="w-[100%] h-[50px] border-4 p-2 focus:outline-none mb-5 cursor-pointer"
+            />
+          </form>
+        </div>
+      </div>
+      ;
       <br />
       <br />
       <br />
       <br />
       <Footer />
-      
     </>
   );
 }
