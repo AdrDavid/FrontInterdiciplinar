@@ -21,13 +21,16 @@ import "swiper/css/scrollbar";
 const MAPS_API_KEY = "AIzaSyBaVjmtCCBw5ULjy8gwdntYwAme8ReB4jA";
 
 export default function Vermais() {
+
+  const url = "http://172.30.5.171:3000";
+
   const [imoveis, setImoveis] = useState({});
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/imovel/${id}`)
+      .get(`${url}/imovel/${id}`)
       .then((res) => setImoveis(res.data));
   }, [id]);
 
@@ -57,7 +60,7 @@ export default function Vermais() {
 
     try {
       const res = await axios.post(
-        "http://127.0.0.1:4040/email/send",
+        `${url}/email/send`,
         dadosEmail
       );
       console.log(res);
@@ -82,7 +85,7 @@ export default function Vermais() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/imovel/${id}`)
+      .get(`${url}/imovel/${id}`)
       .then((res) => setImoveis(res.data));
   }, [id]);
 
@@ -134,7 +137,7 @@ export default function Vermais() {
               <div className="w-full xl:h-[90vh] lg:h-[80vh] md:h-[70vh] sm:h-[60vh] h-[300px]">
                 <img
                   className="w-full  h-full object-cover  rounded-[5px]  "
-                  src={`http://localhost:3000/imagem/${img.imagem}`}
+                  src={`${url}/imagem/${img.imagem}`}
                   alt={`Imagem ${index + 1} do imóvel`}
                 />
               </div>

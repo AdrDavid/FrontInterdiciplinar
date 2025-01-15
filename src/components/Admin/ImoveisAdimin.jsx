@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import api from "./api";
 
+import url from "../url";
+
 export default function ImoveisAdmin() {
   const [imoveis, setImoveis] = useState([]);
   const navigate = useNavigate();
@@ -27,8 +29,12 @@ export default function ImoveisAdmin() {
     navigate("/login");
   };
 
+  // const url = "http://172.30.5.171:3000"
+
   useEffect(() => {
-    api.get("/imovel").then((res) => setImoveis(res.data));
+    api.get("/imovel",{
+      
+    }).then((res) => setImoveis(res.data));
   }, [imoveis]);
 
   const deleteImovel = (id) => {
@@ -277,9 +283,12 @@ export default function ImoveisAdmin() {
                 {imovel.imagem.length > 0 && (
                   <img
                     className="w-full h-48 object-cover"
-                    src={`http://localhost:3000/imagem/${imovel.imagem[0].imagem}`}
+                    src={`${url}/imagem/${imovel.imagem[0].imagem}`}
+                   
+                    
                     alt=""
                   />
+                  
                 )}
                 <div className="p-4 space-y-2">
                   <div className="flex justify-between items-center">

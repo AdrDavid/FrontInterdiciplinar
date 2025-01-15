@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
-
+import url from "../url";
 export default function Sobre() {
+  // const url = "http://172.30.5.171:3000";
+
   const [formData, setFormData] = useState({
     nome: '',
     email: '',
@@ -27,7 +29,7 @@ export default function Sobre() {
   const buscarCep = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.get(`https://brasilapi.com.br/api/cep/v2/${formData.cep}`);
+      const res = await axios.get(`${url}/${formData.cep}`);
       setFormData(prevState => ({
         ...prevState,
         rua: res.data.street,
@@ -59,7 +61,7 @@ export default function Sobre() {
     };
 
     try {
-      const res = await axios.post("http://localhost:3000/email/send", dadosEmail);
+      const res = await axios.post(`${url}/email/send`, dadosEmail);
       alert(res.data.success ? "Email enviado com sucesso!" : "Erro ao enviar email");
     } catch (error) {
       console.error(error);
@@ -72,14 +74,14 @@ export default function Sobre() {
 
   return (
     <div className="m-auto mt-[100px]">
-      <div className="bg-[#4d4d4d] lg:h-[700px] h-[70vh] min-h-[400px] bg-cover bg-sob flex justify-end">
-        <div className="bg-[#8a8a8a0c] backdrop-blur-[7px] w-[40%] p-[10px] h-[100%]">
+      <div className="bg-[#4d4d4d] lg:h-[700px]  min-h-[700px] bg-cover bg-sob flex justify-end">
+        <div className="bg-[#8a8a8a0c] backdrop-blur-[7px] w-[100%] lg:w-[50%] md:w-[50%] sm:w-[60%] p-[10px] sm:p-[60px] h-[100%]">
           <h1 className="text-[30px] text-[#000000] mt-[50px]">
             Quer vender seu imóvel?
           </h1>
           <h2 className="text-[20px] text-[#000000]">Entre em contato comigo!</h2>
           
-          <form onSubmit={formSubmit} className="max-w-[700px] space-y-4">
+          <form onSubmit={formSubmit} className="max-w-[100%]  space-y-4">
             <div className="grid grid-cols-2 gap-3">
               <input
                 type="text"

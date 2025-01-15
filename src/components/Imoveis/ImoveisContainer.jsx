@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from "react";
-
+import url from "../url";
 import axios from "axios";
 import { Link } from "react-router-dom";
 export default function ImoveisContainer({ filtros }) {
   const [imoveis, setImoveis] = useState([]);
   const [imoveisFiltrados, setImoveisFiltrados] = useState([]);
 
+  // const api = "http://172.30.5.171:3000"
   useEffect(() => {
     const getImoveis = () => {
       axios
-        .get("http://localhost:3000/imovel")
-        .then((res) => setImoveis(res.data));
+        .get(`${url}/imovel`, {
+          
+      })
+        .then((res) => {
+          setImoveis(res.data)
+          console.log(res.data)
+        });
     };
     getImoveis();
   }, []);
@@ -47,7 +53,7 @@ export default function ImoveisContainer({ filtros }) {
             {imovel.imagem.length > 0 && (
               <img
                 className=" w-full  md:h-[450px] sm:h-[500px] h-[500px] object-cover rounded-[5px]  "
-                src={`http://localhost:3000/imagem/${imovel.imagem[0].imagem}`}
+                src={`${url}/imagem/${imovel.imagem[0].imagem}`}
                 alt=""
               />
             )}
