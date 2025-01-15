@@ -6,7 +6,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 import Footer from "../Footer/Footer";
 
-import Wpp from "./wpp.jsx";
+import Wpp from "./Wpp.jsx";
 import url from "../url";
 export default function Vermais() {
 
