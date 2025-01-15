@@ -57,7 +57,7 @@ export default function Vermais() {
 
     try {
       const res = await axios.post(
-        "http://localhost:3000/email/send",
+        "http://127.0.0.1:4040/email/send",
         dadosEmail
       );
       console.log(res);
